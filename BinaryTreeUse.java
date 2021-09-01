@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
@@ -13,10 +14,13 @@ public class BinaryTreeUse {
 	
 	static int maxLevel=0;
 	static int preorder=0;
+	static int postOrder=0;
   
 	public static void main(String[] args) {
 		int ans=0;
-		//BinaryTree root = buildTree();
+		int[] in = {2,1,3};
+		int[] post = {2,3,1};
+		BinaryTree root = buildTree();
 		//BinaryTree root1 = buildTree();
 		//inorderTraversal(root);
 		//preorderTraversal(root);
@@ -63,20 +67,42 @@ public class BinaryTreeUse {
 		
 		//connect(root);
 		
-		ArrayList<String> names= new ArrayList<>();
-		names.add("prachi");
-		names.add("lakshya");
-		names.add("acd");
-		names.add("abc");
-		names.add("b");
+		//inPostTree(in,post,in.length,0,in.length-1);
 		
-		Collections.sort(names,Collections.reverseOrder());
+		isFoldable(root);
 		
-		for(String s:names){
-			System.out.println(s);
+	}
+	
+	public static boolean isFoldable(BinaryTree root) {
+		boolean ans=true;
+		if(root == null)
+		return true;
+		
+		Queue<BinaryTree> q = new LinkedList<>();
+		q.add(root);
+		
+		while(!q.isEmpty()){
+		    int count = q.size();
+		    
+		    for(int i=0;i<count;i++){
+		        BinaryTree curr=q.poll();
+		        if(curr == null)
+		        break;
+		        
+		        q.add(curr.left);
+		        
+		        q.add(curr.right);
+		        
+		    }
+		    
+		    ArrayList temp = new ArrayList(q);
+		    int n = temp.size();
+		    for(int i=0;i<temp.size()+1/2;i++){
+		        ans=ans && (temp.get(i)!=null && temp.get(n-1-i)!=null);
+		    }
 		}
-	    
-	    
+    
+        return ans;
 	}
 	
 //	public static void createTree(int[] arr,int n) {
@@ -96,6 +122,25 @@ public class BinaryTreeUse {
 //            }
 //        }   
 //	}
+	
+	public static BinaryTree inPostTree(int[] in, int[] post, int n, int s, int e) {
+		int temp=0;
+	       if(e<s)
+	       return null;
+	       
+	       BinaryTree root = new BinaryTree(post[(n-1)-postOrder++]);
+	       for(int i=0;i<n;i++){
+	           if(in[i]==root.data){
+	               temp=i;
+	               break;
+	           }
+	       }
+	       
+	       root.right = inPostTree(in,post,n,temp+1,e);
+	       root.left = inPostTree(in,post,n,s,temp-1);
+	       
+	       return root;
+	}
 	
 	public static BinaryTree buildTree() {
 		Scanner s = new Scanner(System.in);
