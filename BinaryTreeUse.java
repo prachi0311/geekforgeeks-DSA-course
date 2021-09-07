@@ -10,17 +10,22 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
+import javax.naming.BinaryRefAddr;
+
 public class BinaryTreeUse {
 	
 	static int maxLevel=0;
 	static int preorder=0;
 	static int postOrder=0;
+	static int max_sum=0;
+	static int count=0;
   
 	public static void main(String[] args) {
 		int ans=0;
 		int[] in = {2,1,3};
 		int[] post = {2,3,1};
 		BinaryTree root = buildTree();
+		ArrayList<Integer> A = new ArrayList<>();
 		//BinaryTree root1 = buildTree();
 		//inorderTraversal(root);
 		//preorderTraversal(root);
@@ -69,9 +74,123 @@ public class BinaryTreeUse {
 		
 		//inPostTree(in,post,in.length,0,in.length-1);
 		
-		isFoldable(root);
+		//System.out.println(isFoldable(root));
+		
+		//System.out.println(findMaxSum(root));
+		
+		//System.out.println(countSubtreesWithSumX(root,-5));
+		
+		serialize(root,A);
+		BinaryTree root1 = deSerialize(A);
+		inorderTraversal(root1);
+		
 		
 	}
+	public static void serialize(BinaryTree root, ArrayList<Integer> A) 
+	{
+	    Queue<BinaryTree> q = new LinkedList<>();
+	    q.add(root);
+	    A.add(root.data);
+	    
+	    while(!q.isEmpty()){
+	    	BinaryTree curr = q.poll();
+	        
+	            if(curr.left != null){
+	                q.add(curr.left);
+	                A.add(curr.left.data);
+	            }
+	            else{
+	                A.add(-1);
+	            }
+	            if(curr.right != null){
+	                q.add(curr.right);
+	                A.add(curr.right.data);
+	            } 
+	            else{
+	                A.add(-1);
+	            }
+	        
+	        
+	    }
+	    //code here
+	}
+	
+	//Function to deserialize a list and construct the tree.
+    public static BinaryTree deSerialize(ArrayList<Integer> A)
+    {
+        //code here
+        int i=1;
+        Queue<BinaryTree> q = new LinkedList<>();
+        BinaryTree root = new BinaryTree(A.get(0));
+        q.add(root);
+        while(!q.isEmpty()){
+        	BinaryTree curr = q.poll();
+            
+            if(A.get(i)!=-1){
+                curr.left = new BinaryTree(A.get(i));
+                q.add(curr.left);
+                i++;
+            }
+            else{
+                curr.left=null;
+            }
+            if(A.get(i)!=-1){
+                curr.right = new BinaryTree(A.get(i));
+                q.add(curr.right);
+                i++;
+            }
+            else{
+                curr.right=null;
+            }
+            
+        }
+        
+        return root;
+    }
+	 
+	    //Function to count number of subtrees having sum equal to given sum.
+	    public static int countSubtreesWithSumX(BinaryTree root, int X)
+	    {
+	       count=0;
+	       temp(root,X);
+	       
+	       return count;
+		//Add your code here.
+		
+	    }
+	    
+	    public static int temp(BinaryTree root, int X){
+	         if(root == null)
+	            return 0;
+	        int sum = temp(root.left,X)+temp(root.right,X)+root.data;
+	        if(sum == X || root.data == X)
+	         count++;
+	         
+	         return sum;
+	    }
+	
+	 public static int findMaxSum(BinaryTree node)
+	    {
+		 	max_sum=node.data;
+	        temp(node);
+	        
+	        return max_sum;
+	    }
+	    
+	    public static int temp(BinaryTree node){
+	        if(node==null)
+	            return Integer.MIN_VALUE;
+	        if(node.left==null && node.right==null)
+	         return node.data;
+	        //your code goes here
+	        int left_sum = temp(node.left);
+	        int right_sum = temp(node.right);
+	        int root_left = left_sum+node.data;
+	        int root_right = right_sum+node.data;
+	        int total = left_sum+right_sum+node.data;
+	        max_sum = Math.max(max_sum,Math.max(left_sum,Math.max(right_sum,Math.max(root_left,Math.max(root_right,Math.max(node.data,total))))));
+	        return Math.max(root_left,Math.max(root_right,node.data));
+	    }
 	
 	public static boolean isFoldable(BinaryTree root) {
 		boolean ans=true;
@@ -87,7 +206,7 @@ public class BinaryTreeUse {
 		    for(int i=0;i<count;i++){
 		        BinaryTree curr=q.poll();
 		        if(curr == null)
-		        break;
+		        continue;
 		        
 		        q.add(curr.left);
 		        
@@ -97,8 +216,9 @@ public class BinaryTreeUse {
 		    
 		    ArrayList temp = new ArrayList(q);
 		    int n = temp.size();
-		    for(int i=0;i<temp.size()+1/2;i++){
-		        ans=ans && (temp.get(i)!=null && temp.get(n-1-i)!=null);
+		    int l = (n+1)/2;
+		    for(int i=0;i<l;i++){
+		        ans=ans && ( (temp.get(i)!=null && temp.get(n-1-i)!=null) || (temp.get(i)==null && temp.get(n-1-i)==null));
 		    }
 		}
     
