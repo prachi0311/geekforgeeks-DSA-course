@@ -1,0 +1,62 @@
+package codes;
+
+public class DynamicProgramming {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String str1 = "xyztt";
+		String str2 = "xyzt";
+		
+		//Naive solution
+		//int ans = LCS(str1,str2,str1.length(),str2.length());
+		
+		//By DP tabulation
+		int ans = LCSDP(str1,str2,str1.length(),str2.length());
+		
+		System.out.println(ans);
+
+	}
+	
+	public static int LCSDP(String s1,String s2,int l1,int l2) {
+		int[][] table = new int[l1+1][l2+1];
+		for(int i=0;i<l1+1;i++) {
+			table[i][0]=0;
+		}
+		for(int i=0;i<l2+1;i++) {
+			table[0][i]=0;
+		}
+		
+		for(int i=1;i<l1+1;i++) {
+			for(int j=1;j<l2+1;j++) {
+				if(s1.charAt(i-1)==s2.charAt(j-1)) {
+					table[i][j]=table[i-1][j-1]+1;
+				}
+				else {
+					table[i][j]=Math.max(table[i-1][j], table[i][j-1]);
+				}
+			}
+		}
+		
+		return table[l1][l2];
+	}
+
+	public static int LCS(String s1,String s2,int l1,int l2) {
+		int ans=0;
+		if(l1==0 || l2==0)
+			return 0;
+		if(s1.equals(s2)) {
+			return s1.length();
+		}
+		for(int i=0;i<l1;i++) {
+			for(int j=0;j<l2;j++) {
+				if(s1.charAt(i)==s2.charAt(j)) {
+					return 1+LCS(s1.substring(i+1),s2.substring(j+1),l1-i-1,l2-j-1);
+			}
+			
+			}
+			
+			
+		}
+		
+		return 0;
+	}
+}

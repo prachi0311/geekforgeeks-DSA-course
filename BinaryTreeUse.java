@@ -25,7 +25,7 @@ public class BinaryTreeUse {
 		int[] in = {2,1,3};
 		int[] post = {2,3,1};
 		BinaryTree root = buildTree();
-		ArrayList<Integer> A = new ArrayList<>();
+		//ArrayList<Integer> A = new ArrayList<>();
 		//BinaryTree root1 = buildTree();
 		//inorderTraversal(root);
 		//preorderTraversal(root);
@@ -80,12 +80,16 @@ public class BinaryTreeUse {
 		
 		//System.out.println(countSubtreesWithSumX(root,-5));
 		
-		serialize(root,A);
-		BinaryTree root1 = deSerialize(A);
-		inorderTraversal(root1);
+		//serialize(root,A);
+		//BinaryTree root1 = deSerialize(A);
+		//inorderTraversal(root1);
 		
+		//System.out.println(printKDistantfromLeaf(root,2));
 		
+		//System.out.println(getMaxSum(root));
 	}
+	
+	    
 	public static void serialize(BinaryTree root, ArrayList<Integer> A) 
 	{
 	    Queue<BinaryTree> q = new LinkedList<>();
