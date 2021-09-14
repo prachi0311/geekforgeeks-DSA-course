@@ -2,11 +2,12 @@ package codes;
 
 public class DynamicProgramming {
 	int x=0;
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String str1 = "xyy";
 		String str2 = "xy";
-		
+		int[] arr = {1,2,3};
 		//Naive solution
 		//int ans = LCS(str1,str2,str1.length(),str2.length());
 		
@@ -17,20 +18,45 @@ public class DynamicProgramming {
 		//int ans = longestPalindromicSubsequence("geeksforgeeks");
 		
 		//TODO
-		//longestRepeatingSubsequence("abc");
+		//longestRepeatingSubsequence("abc");**************
 		
 		//TODO optimized DP solution
-		int ans = optimizedLCS(str1,str2,str1.length(),str2.length());
+		 //int ans = optimizedLCS(str1,str2,str1.length(),str2.length());
 		
 		//TODO print LCS
 		//printLCS(str1,str2,str1.length(),str2.length());
+		 
+		 int ans = coinChange(arr,arr.length,4);
 		
-		System.out.println(ans);
+		 System.out.println(ans);
 		
 		
 
 	}
 	
+	private static int coinChange(int[] arr,int n, int sum) {
+		// TODO Auto-generated method stub
+		int[][] dp = new int[n+1][sum+1];
+		for(int i=0;i<n+1;i++) {
+			dp[i][0]=1;
+		}
+		for(int i=0;i<sum+1;i++) {
+			dp[0][i]=0;
+		}
+		dp[0][0]=1;
+		for(int i=1;i<n+1;i++) {
+			for(int j=1;j<sum+1;j++) {
+				dp[i][j]=dp[i-1][j];
+				if(j-arr[i-1]>=0) {
+					dp[i][j]=dp[i][j]+dp[i][j-arr[i-1]];
+				}
+					
+			}
+		}
+		
+		return dp[n][sum];
+	}
+
 	public static void printLCS(String s1,String s2,int l1,int l2) {
 		String LCS="";
 		int[][] arr = new int[2][l2+1];

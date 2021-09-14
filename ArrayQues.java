@@ -7,12 +7,12 @@ public class ArrayQues {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		int[] arr = {4,2,2};
+		int[] arr = {6,4,2,-5,2,-9,10,-1,4};
 		ArrayQues obj = new ArrayQues();
 		
 		//recap(arr,arr.length,3);
 		
-		equillibrium_alt(arr,arr.length);
+		//equillibrium_alt(arr,arr.length);
 		
 		//int ans = largestNum(arr,arr.length);
 		
@@ -37,7 +37,7 @@ public class ArrayQues {
 		
 		//int ans = trapRainWater(arr,arr.length);
 		
-		//int ans=maxSumSubarray(arr,arr.length);
+		int ans=maxSumSubarray(arr,arr.length);
 		
 		//int ans = evenOdd(arr,arr.length);
 		
@@ -69,7 +69,7 @@ public class ArrayQues {
 		//stockBuyAndSell(arr,arr.length);
 	    
 		
-        //System.out.println(ans);
+        System.out.println(ans);
 
 	}
 	
