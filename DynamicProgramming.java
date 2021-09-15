@@ -5,9 +5,9 @@ public class DynamicProgramming {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String str1 = "xyy";
-		String str2 = "xy";
-		int[] arr = {1,2,3};
+		String str1 = "cat";
+		String str2 = "cut";
+		int[] arr = {2,3,1,1,4};
 		//Naive solution
 		//int ans = LCS(str1,str2,str1.length(),str2.length());
 		
@@ -25,8 +25,14 @@ public class DynamicProgramming {
 		
 		//TODO print LCS
 		//printLCS(str1,str2,str1.length(),str2.length());
+		
+		//TODO stair climb
 		 
-		 int ans = coinChange(arr,arr.length,4);
+		// int ans = coinChange(arr,arr.length,4);
+		
+		//int ans = editDis(str1,str2,str1.length(),str2.length());
+		
+		int ans = jumpGame(arr);
 		
 		 System.out.println(ans);
 		
@@ -34,6 +40,47 @@ public class DynamicProgramming {
 
 	}
 	
+	public static int jumpGame(int nums[]) {
+		  int dp[] = new int[nums.length+1];
+	        dp[nums.length]=0;
+	        int min=Integer.MAX_VALUE;
+	        int k=nums.length-2;
+	        for(int i=nums.length-1;i>0;i--){
+	            for(int j=0;j<nums[k];j++){
+	                min = Math.min(min,dp[i+j+1]);
+	            }
+	            dp[i]=min+1;
+	            min=Integer.MAX_VALUE;
+	            k--;
+	        }
+	        
+	        return dp[1];
+	}
+	
+	private static int editDis(String str1, String str2, int l1, int l2) {
+		// TODO Auto-generated method stub
+		int[][] dp = new int[l1+1][l2+1];
+		for(int i=0;i<l2+1;i++) {
+			dp[0][i]=i;
+		}
+		for(int i=0;i<l1+1;i++) {
+			dp[i][0]=i;
+		}
+		
+		for(int i=1;i<l1+1;i++) {
+			for(int j=1;j<l2+1;j++) {
+				if(str1.charAt(i-1)==str2.charAt(j-1))
+					dp[i][j]=dp[i-1][j-1];
+				else {
+					dp[i][j]=Math.min(dp[i][j], Math.min(dp[i][j-1], dp[i-1][j]))+1;
+				}
+			}
+		}
+		
+		return dp[l1][l2];
+		
+	}
+
 	private static int coinChange(int[] arr,int n, int sum) {
 		// TODO Auto-generated method stub
 		int[][] dp = new int[n+1][sum+1];
