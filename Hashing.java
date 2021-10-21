@@ -10,6 +10,9 @@ public class Hashing {
 		int[] arr1 = {87,2,4};
 		
 		int ans=0;
+		HashMap<Integer,Integer> map =new HashMap<>();
+		map.put(1, 1);
+		test(map);
 		
 		//ans = new Hashing().findDistinct(arr,arr.length);
 		//ans = arrIntersection(arr,arr1);
@@ -34,7 +37,7 @@ public class Hashing {
 		
 		//seperateChaining(arr);
 		
-		equalOneZero(arr);
+		//equalOneZero(arr);
 		
 		//System.out.println(ans);
 
@@ -66,6 +69,10 @@ public class Hashing {
         
         System.out.println(count);
 		
+	}
+	
+	public static void test(HashMap<Integer,Integer> map) {
+		System.out.println(map.size());
 	}
 
 	private static void test(int[] arr, int[] arr1) {

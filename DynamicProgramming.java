@@ -1,13 +1,16 @@
 package codes;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class DynamicProgramming {
 	int x=0;
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String str1 = "cat";
-		String str2 = "cut";
-		int[] arr = {2,3,1,1,4};
+//		String str1 = "cat";
+//		String str2 = "cut";
+//		int[] arr = {1,2};
 		//Naive solution
 		//int ans = LCS(str1,str2,str1.length(),str2.length());
 		
@@ -31,13 +34,113 @@ public class DynamicProgramming {
 		// int ans = coinChange(arr,arr.length,4);
 		
 		//int ans = editDis(str1,str2,str1.length(),str2.length());
+//		
+//		int ans = jumpGame(arr);
+//		
+//		 System.out.println(ans);
 		
-		int ans = jumpGame(arr);
+//		ArrayList<String> dict = new ArrayList<>();
+//		dict.add("i");
+//		dict.add("like");
+//		dict.add("samsung");
+//		dict.add("l");
+//		
+//		String s = "samsunglikei";
+//		
+//		System.out.println(wordBreak(s,dict,s.length()));
 		
-		 System.out.println(ans);
+		int m[][] = {
+				{1,1,0},
+				{1,0,0},
+				{1,0,0}
+		};
 		
-		
+		System.out.println("Maximum square size is" + maxSquare(m));
 
+	}
+	
+	public static int maxSquare(int[][] m) {
+		if(m.length==0) {
+			return 0;
+		}
+		
+		int r = m.length;
+		int c = m[0].length;
+		int maxSum=0;
+		int ansR=-1;
+		int ansC=-1;
+		
+		int[][] sum = new int[r][c];
+		
+		//Initialise sum[][]
+		
+		for(int i=0;i<c;i++) {
+			sum[0][i]=m[0][i];
+		}
+		
+		for(int i=0;i<r;i++) {
+			sum[i][0]=m[i][0];
+		}
+		
+		//Filling sum[][]
+		
+		for(int i=1;i<r;i++) {
+			for(int j=1;j<c;j++) {
+				if(m[i][j]==1) {
+					sum[i][j]=Math.min(sum[i-1][j], Math.min(sum[i][j-1], sum[i-1][j-1]))+1;
+				}
+				else {
+					sum[i][j]=0;
+				}
+				if(sum[i][j] > maxSum) {
+					maxSum=sum[i][j];
+					ansR=i;
+					ansC=j;
+				}
+			}
+			
+		}
+		
+		printSquare(m,ansR,ansC,maxSum);
+		
+		return maxSum;
+		
+	}
+	
+	public static void printSquare(int[][] m,int r,int c,int size) {
+		int startRow = r-size+1;
+		int startCol = c-size+1;
+		
+		for(int i=startRow;i<=r;i++) {
+			for(int j=startCol;j<=c;j++) {
+				System.out.print(m[i][j]+",");
+			}
+			System.out.println();
+		}
+	}
+	
+	public static Boolean wordBreak(String s,ArrayList<String> dict,int n) {
+		
+		Boolean[] dp=new Boolean[n+1];
+		Arrays.fill(dp, false);
+		dp[0]=true;
+//		if(dict.contains(s.substring(0,1))) {
+//			dp[1]=true;
+//		}
+		
+		for(int i=1;i<n+1;i++) {
+			for(int j=i;j>0;j--) {
+				//System.out.println(dp[j-1]+" , "+s.substring(j-1,i));
+				if(dp[j-1] && dict.contains(s.substring(j-1,i))) {
+					dp[i]=dp[i] || true;
+				}
+				else {
+					dp[i]=dp[i] || false;
+				}
+			}
+		}
+		
+		return dp[n];
 	}
 	
 	public static int jumpGame(int nums[]) {
@@ -47,8 +150,11 @@ public class DynamicProgramming {
 	        int k=nums.length-2;
 	        for(int i=nums.length-1;i>0;i--){
 	            for(int j=0;j<nums[k];j++){
+	            	if(i+j+1<dp.length)
 	                min = Math.min(min,dp[i+j+1]);
 	            }
+	            if(min==Integer.MAX_VALUE)
+	            	min=100000;
 	            dp[i]=min+1;
 	            min=Integer.MAX_VALUE;
 	            k--;

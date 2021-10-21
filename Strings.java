@@ -17,7 +17,37 @@ public class Strings {
 		//reverseStringWords("I love coding");
 		
 		//Naive Method
-		patternSearch(str1,pat);
+		//patternSearch(str1,pat);
+		
+		//KMP
+		String str="aaaa";
+		int[] lps=new int[str.length()];
+		fillLPS(str,lps);
+		
+	}
+	
+	public static void fillLPS(String str,int[] lps) {
+		lps[0]=0;
+		int len=0;
+		
+		for(int i=1;i<str.length();i++) {
+			if(str.charAt(i)==str.charAt(len)){
+				lps[i]=len+1;
+				len=lps[i];
+			}
+			else {
+				if(len==0)
+					lps[i]=0;
+				else {
+					len=lps[len-1];
+					i--;
+				}
+			}
+		}
+		
+		for(int x:lps) {
+			System.out.println(x);
+		}
 	}
 	
 	public static void patternSearch(String str1,String pat) {
