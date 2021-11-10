@@ -29,14 +29,14 @@ public class Temp {
 //		matrix(arr,1);
 		//int[] arr = { 2, 1, 1, 5, 6, 2, 3, 1 };
 		
-		int numCourses = 4;
-		int[][] prerequisites = {
-				{1,0},
-				{2,0},
-				{3,1},
-				{3,2}
-		};
-		
+//		int numCourses = 4;
+//		int[][] prerequisites = {
+//				{1,0},
+//				{2,0},
+//				{3,1},
+//				{3,2}
+//		};
+//		
 		
 		//int[] prices = {1,3,2,8,4,9};
 //		MyStack s = new MyStack();
@@ -53,9 +53,122 @@ public class Temp {
 		
 		//int ans = maxProfit(prices,2);
 		
-		findOrder(numCourses,prerequisites);
+		//System.out.println(oneEditDis("cad","cade"));
+		
+		//findOrder(numCourses,prerequisites);
+		
+		//int[] nums= {};
+		
+		//O(nlogn)
+		//System.out.println(LIS(nums));
+//		
+//		String t=",right now,";
+//		
+//		String[] test = t.split(",");
+//		System.out.println(test.length);
+//		for(String s:test)
+//			System.out.println(s);
+		
+		int[] arr= {2,1,5};
+		System.out.println(coin(arr,11));
+		
+		
+		
 		
 }
+	public static int LongestIncSum(int[] arr) {
+		int len=arr.length;
+		if(len==0)
+			return 0;
+		
+		ArrayList<Integer> dp=new ArrayList<Integer>();
+		
+		
+		dp.add(arr[0]);
+		int sum=arr[0];
+		int max=arr[0];
+		
+		for(int i=1;i<len;i++) {
+			if(arr[i]>dp.get(dp.size()-1)) {
+				dp.add(arr[i]);
+				sum+=arr[i];
+				max=sum;
+			}
+			else {
+				int temp=binarySearch(dp,arr[i],0,dp.size()-1);
+				if((sum-arr[temp]+arr[i])>max) {
+					dp.set(temp, arr[i]);
+				}
+					
+			}
+			
+		}
+		return -1;
+	}
+	public static int binarySearch(ArrayList<Integer> dp,int elem,int s,int e){
+        
+        int start=s;
+        int end=e;
+        
+        while(start<end){
+            int mid=start+(end-start)/2;
+            
+            if(dp.get(mid)>=elem)
+                	end=mid;
+                else
+                    start = mid+1;
+                
+            
+        }
+        
+        return end;
+    }
+    
+    public static int LIS(int[] nums) {
+        int len = nums.length;
+       ArrayList<Integer> dp=new ArrayList<>();
+        
+        dp.add(nums[0]);
+        
+        for(int i=1;i<nums.length;i++){
+            if(dp.get(dp.size()-1)<nums[i])
+                dp.add(nums[i]);
+            else{
+                int temp=binarySearch(dp,nums[i],0,dp.size()-1);
+               // System.out.println(temp);
+                dp.set(temp,nums[i]);
+            }
+
+        }
+        
+        return dp.size();
+    }
+	
+	public static boolean oneEditDis(String s1,String s2) {
+		if(s1.equals(s2))
+			return false;
+		
+		int l1=s1.length();
+		int l2=s2.length();
+		
+		if(l2<l1)
+			oneEditDis(s2,s1);
+		
+		if(l2-l1 > 1)
+			return false;
+		
+		for(int i=0;i<l1;i++) {
+			if(s1.charAt(i)!=s2.charAt(i)) {
+				if(l1==l2)
+					return s1.substring(i+1).equals(s2.substring(i+1));
+				else
+					return s1.substring(i).equals(s2.substring(i+1));
+			}
+		}
+	
+		return (l1+1 == l2);
+	
+	}
 	
 	 public static int[] findOrder(int numCourses, int[][] prerequisites) {
 	        
@@ -236,5 +349,32 @@ public class Temp {
 		System.out.println("count "+count);
 		System.out.println(res);
 	}
+	
+	public static int coin(int[] coins, int amount) {
+		 if (amount == 0) {
+	            return 0;
+	        }
+	        if (coins == null || coins.length == 0 || amount < 0) {
+	            return -1;
+	        }
 
-}
+	        int[] dp = new int[amount + 1];
+	        Arrays.fill(dp, Integer.MAX_VALUE);
+	        dp[0] = 0;
+
+	        for (int c : coins) {
+	            for (int i = c; i <= amount; i++) {
+	                if (dp[i - c] != Integer.MAX_VALUE) {
+	                    dp[i] = Math.min(dp[i-1], dp[i - c] + 1);
+	                }
+	            }
+	        }
+	        
+	        if(dp[amount]==0)
+	        	return -1;
+	        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+	    }
+		 
+	}
+
+

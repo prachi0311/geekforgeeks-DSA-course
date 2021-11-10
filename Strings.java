@@ -9,8 +9,8 @@ public class Strings {
 		// TODO Auto-generated method stub
 //		Scanner s = new Scanner(System.in);
 //		String str = s.nextLine();
-		String str1="abcabcd";
-		String pat="abcd";
+//		String str1="abcabcd";
+//		String pat="abcd";
 		//System.out.println(leftMost(str));
 		//System.out.println(leftMostNonRep(str));
 		
@@ -20,11 +20,65 @@ public class Strings {
 		//patternSearch(str1,pat);
 		
 		//KMP
-		String str="aaaa";
-		int[] lps=new int[str.length()];
-		fillLPS(str,lps);
+//		String str="aaaa";
+//		int[] lps=new int[str.length()];
+//		fillLPS(str,lps);
+		areSentencesSimilar("my name is haley","my haley");
 		
 	}
+	
+	 public static boolean areSentencesSimilar(String sentence1, String sentence2) {
+	        
+	        if(sentence1.length()>sentence2.length()){
+	            areSentencesSimilar(sentence2, sentence1);
+	        }
+	            
+	        String[] s1=sentence1.split(" ");
+	        String[] s2=sentence2.split(" ");
+	        
+	        if((s1.length==1 && s2.length==1) && sentence1!=sentence2)
+	            return false;
+	        
+	        int i=0,j=0,count=0;
+	        
+	        while(i<s2.length){
+	             System.out.println(s2[i]);
+	            if(s2[i].equals(s1[j])){
+	                s2[i]=",";
+	                count++;
+	                i++;
+	                j++;
+	                
+	            }
+	            else{
+	                i++;
+	            }
+	                
+	        }
+	        
+	        if(count!=s1.length){
+	            System.out.println(count);
+	            return false;
+	        }
+	        
+	        int res=0;
+	        
+	        for(int k=0;k<s2.length;k++){
+	            if(k!=0 && s2[k].equals(","))
+	                res++;
+	        }
+	        
+	        System.out.println("res="+res);
+	        
+	        if(res==1){
+	            return true;
+	        }
+	        else{
+	            return false;
+	        }
+	            
+	    }
+	
 	
 	public static void fillLPS(String str,int[] lps) {
 		lps[0]=0;
